@@ -32,22 +32,27 @@ function Company({ company }) {
     }
   }, [])
 
-  return <tr className="" key={company.ticker}><td>{company.ticker}</td><td>{company.companyName}</td>
-    {latest && <>
-      <td>{latest.latestPrice}</td>
-      <td>{latest.pointChange} {latest.pointChange > 0 ? '↑' : '↓'}</td>
-    </>}
-    {data.summary && data.summary && <>
-      <td>{data.summary.epsDiluted && data.summary.epsDiluted.toFixed(2)}</td>
-      <td>{data.summary.peDiluted && data.summary.peDiluted.toFixed(2)}</td>
-      <td>{data.summary.bvps && data.summary.bvps.toFixed(2)}</td>
-      <td>{Grahams(data.summary)}</td>
-      <td>{latest.latestPrice ? (Grahams(data.summary) > data.summary.open ? 'Buy' : 'Sell') : ''}</td>
-      <td>{data.summary && data.summary.beta}</td>
-      <td>{(Grahams(data.summary) - data.summary.open).toFixed(2)}</td>
-    </>}
+  if (data && data.summary && data.summary.epsDiluted) {
+    return <tr className="" key={company.ticker}><td>{company.ticker}</td><td>{company.companyName}</td>
+      {latest && <>
+        <td>{latest.latestPrice}</td>
+        <td>{latest.pointChange} {latest.pointChange > 0 ? '↑' : '↓'}</td>
+      </>}
+      {data.summary && <>
+        <td>{data.summary.epsDiluted && data.summary.epsDiluted.toFixed(2)}</td>
+        <td>{data.summary.peDiluted && data.summary.peDiluted.toFixed(2)}</td>
+        <td>{data.summary.bvps && data.summary.bvps.toFixed(2)}</td>
+        <td>{Grahams(data.summary)}</td>
+        <td>{latest.latestPrice ? (Grahams(data.summary) > data.summary.open ? 'Buy' : 'Sell') : ''}</td>
+        <td>{data.summary && data.summary.beta}</td>
+        <td>{(Grahams(data.summary) - data.summary.open).toFixed(2)}</td>
+      </>}
+    </tr>
+  }
 
-  </tr>
+  return ''
+
+
 }
 
 function App() {
