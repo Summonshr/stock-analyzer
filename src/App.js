@@ -82,7 +82,7 @@ function App() {
 
   return (
     <div className="App">
-      <input value={search} onChange={event => setSearch(event.target.value)} />
+      <input value={search} placeholder="Search ..." onChange={event => setSearch(event.target.value)} />
       <select value={group} onChange={(e) => setGroup(e.target.value)}>
         <option value="">All</option>
         {groups.map(group => <option key={group} value={group}>{group}</option>)}
