@@ -55,6 +55,14 @@ function Company({ company }) {
 
 }
 
+window.onkeydown = function(e) {
+  if (e.keyCode == 82 && e.ctrlKey && e.shiftKey) {
+      e.preventDefault()
+      localStorage.clear();
+      window.location.reload()
+  }
+}
+
 function App() {
 
   let [companies, setCompanies] = useState([])
