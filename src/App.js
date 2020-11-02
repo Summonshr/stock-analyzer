@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import Axios from 'axios';
 import { map, uniq } from 'lodash';
 
-function Grahams({ bvps, epsDiluted }) {
+function Grahams({ bvps, eps }) {
 
-  return bvps && epsDiluted && bvps > 0 && epsDiluted > 0 ? (Math.sqrt(22.5 * bvps * epsDiluted)).toFixed(2) : ''
+  return bvps && eps && bvps > 0 && eps > 0 ? (Math.sqrt(22.5 * bvps * eps)).toFixed(2) : ''
 }
 
 function Company({ company }) {
@@ -15,7 +15,7 @@ function Company({ company }) {
     if (localStorage.getItem('ticker-' + company.ticker)) {
       setData(JSON.parse(localStorage.getItem('ticker-' + company.ticker)))
     } else {
-      Axios.get('https://bizmandu.com/__stock/tearsheet/summary/?tkr=' + company.ticker).then(response => {
+      Axios.get('https://bizmandu.com/__stock/tearsheet/keyFinancial/?tkr=' + company.ticker).then(response => {
         setData(response.data.message)
         localStorage.setItem('ticker-' + company.ticker, JSON.stringify(response.data.message))
       })
@@ -32,20 +32,26 @@ function Company({ company }) {
     }
   }, [])
 
-  if (data && data.summary && data.summary.epsDiluted) {
-    return <tr className="" key={company.ticker}><td>{company.ticker}</td><td>{company.companyName}</td>
+  let className = []
+
+  if (latest.latestPrice) {
+    if (data && data.keyFinancial && data.keyFinancial.open && Grahams(data.keyFinancial) > data.keyFinancial.open) {
+      className.push('bg-green')
+    }
+  }
+
+  if (data && data.keyFinancial && data.keyFinancial.data && data.keyFinancial.data[0]) {
+    let { eps, bvps } = data.keyFinancial.data[0]
+    return <tr className={className.join(' ')} key={company.ticker}><td>{company.ticker}</td><td>{company.companyName}</td>
       {latest && <>
         <td>{latest.latestPrice}</td>
         <td>{latest.pointChange} {latest.pointChange > 0 ? '↑' : '↓'}</td>
       </>}
-      {data.summary && <>
-        <td>{data.summary.epsDiluted && data.summary.epsDiluted.toFixed(2)}</td>
-        <td>{data.summary.peDiluted && data.summary.peDiluted.toFixed(2)}</td>
-        <td>{data.summary.bvps && data.summary.bvps.toFixed(2)}</td>
-        <td>{Grahams(data.summary)}</td>
-        <td>{latest.latestPrice ? (Grahams(data.summary) > data.summary.open ? 'Buy' : 'Sell') : ''}</td>
-        <td>{data.summary && data.summary.beta}</td>
-        <td>{(Grahams(data.summary) - data.summary.open).toFixed(2)}</td>
+      {data.keyFinancial && <>
+        <td>{eps.toFixed(2)}</td>
+        <td>{eps ? (latest.latestPrice / eps).toFixed(2) : 0}</td>
+        <td>{bvps.toFixed(2)}</td>
+        <td>{Grahams(data.keyFinancial.data[0])}</td>
       </>}
     </tr>
   }
@@ -55,11 +61,11 @@ function Company({ company }) {
 
 }
 
-window.onkeydown = function(e) {
+window.onkeydown = function (e) {
   if (e.keyCode == 82 && e.ctrlKey && e.shiftKey) {
-      e.preventDefault()
-      localStorage.clear();
-      window.location.reload()
+    e.preventDefault()
+    localStorage.clear();
+    window.location.reload()
   }
 }
 
@@ -106,9 +112,6 @@ function App() {
             <td>PE</td>
             <td>BVPS</td>
             <td>Fair Price</td>
-            <td>Signal</td>
-            <td>Beta</td>
-            <td>Fair Diff</td>
           </tr>
           {
             companies.map(company => <Company key={company.ticker} company={company} />)

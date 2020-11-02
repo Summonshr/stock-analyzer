@@ -1,4 +1,4 @@
-table, tr, td{
+table, tr, td {
   border:  1px solid black;
   border-collapse: collapse;
   padding:10px;
@@ -10,4 +10,8 @@ select {
 
 input {
   padding: 10px;
+}
+
+.bg-green {
+  background-color: rgb(90, 185, 90);
 }
