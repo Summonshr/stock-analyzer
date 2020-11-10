@@ -26,7 +26,9 @@ function getClassLowerBetter(v,p1,p2,p3,p4){
 }
 
 function getClassHigherBetter(v,p1,p2,p3,p4){
-  
+  if(pe <= 0 ){
+    return ''
+  }
   if(v > p4){
     return 'bg-green'
   }
