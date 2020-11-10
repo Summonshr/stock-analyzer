@@ -15,3 +15,15 @@ input {
 .bg-green {
   background-color: rgb(90, 185, 90);
 }
+
+.bg-green-light {
+  background-color: rgb(147, 248, 147);
+}
+
+.bg-green-lighter {
+  background-color: rgb(177, 245, 177);
+}
+
+.bg-green-lightest {
+  background-color: rgb(217, 245, 217);
+}
