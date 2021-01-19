@@ -26,9 +26,6 @@ function getClassLowerBetter(v, p1, p2, p3, p4) {
 }
 
 function getClassHigherBetter(v, p1, p2, p3, p4) {
-  if (v <= 0) {
-    return ''
-  }
   if (v > p4) {
     return 'bg-green'
   }
@@ -41,6 +38,7 @@ function getClassHigherBetter(v, p1, p2, p3, p4) {
   if (v > p1) {
     return 'bg-green-lightest'
   }
+  return ''
 }
 
 function Company({ company }) {
@@ -93,7 +91,7 @@ function Company({ company }) {
         <td className={getClassLowerBetter(pe, 10, 15, 20, 25)}>{pe}</td>
         <td className={getClassHigherBetter(bvps, 150, 200, 250, 300)}>{bvps}</td>
         <td>{fair_value}</td>
-        <td className={getClassHigherBetter((change / price).toFixed(2), -0.40, -0.30, -0.20, -0.10)}>{(change / price).toFixed(2)}</td>
+        <td className={getClassHigherBetter((change / price).toFixed(2), -0.60, -0.45, -0.30, -0.15)}>{(change / price).toFixed(2)}</td>
       </>}
     </tr>
   }
