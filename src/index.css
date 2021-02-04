@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.full-button {
+  height: 40px;
+}
+
+table{
+  background-color: white;
+}

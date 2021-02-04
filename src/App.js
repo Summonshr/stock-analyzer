@@ -2,6 +2,8 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import Axios from 'axios';
 import { map, uniq } from 'lodash';
+import millify from 'millify';
+import { toJpeg } from 'dom-to-image';
 
 function Grahams({ bvps, eps }) {
   return bvps && eps && bvps > 0 && eps > 0 ? (Math.sqrt(22.5 * bvps * eps)).toFixed(2) : ''
@@ -43,6 +45,7 @@ function getClassHigherBetter(v, p1, p2, p3, p4) {
 
 function Company({ company }) {
 
+
   let [data, setData] = useState('')
   let [latest, setLatest] = useState('')
 
@@ -74,16 +77,21 @@ function Company({ company }) {
       className.push('bg-green')
     }
   }
+
+  if (['KMFL', 'HAMRO', 'NCDB', 'SHBL', 'LFC'].includes(company.ticker)) {
+    return ''
+  }
+
   if (data && data.keyFinancial && data.keyFinancial.data && data.keyFinancial.data[0]) {
     let { eps, bvps } = data.keyFinancial.data[0]
-    let fair_value    = Grahams(data.keyFinancial.data[0])
-    let pe            = eps ? (latest.latestPrice / eps).toFixed(2) : 0
-    let price         = latest.latestPrice
-    let change        = (fair_value - price).toFixed()
+    let fair_value = Grahams(data.keyFinancial.data[0])
+    let pe = eps ? (latest.latestPrice / eps).toFixed(2) : 0
+    let price = latest.latestPrice
+    let change = (fair_value - price).toFixed()
 
-    return <tr key={company.ticker}><td><a href={"https://sharesansar.com/company/"+company.ticker} target="_blank">{company.ticker}</a></td><td>{company.companyName}</td>
+    return <tr key={company.ticker}><td><a href={"https://sharesansar.com/company/" + company.ticker} target="_blank">{company.ticker}</a></td><td>{company.companyName}</td>
       {latest && <>
-        <td>{price}</td>
+        <td>{latest.latestPrice}</td>
         <td>{latest.pointChange} {latest.pointChange > 0 ? '↑' : '↓'}</td>
       </>}
       {data.keyFinancial && <>
@@ -91,6 +99,7 @@ function Company({ company }) {
         <td className={getClassLowerBetter(pe, 10, 15, 20, 25)}>{pe}</td>
         <td className={getClassHigherBetter(bvps, 150, 200, 250, 300)}>{bvps}</td>
         <td>{fair_value}</td>
+        <td>{millify(data.summary.listedShares)}</td>
         <td className={getClassHigherBetter((change / price).toFixed(2), -0.60, -0.45, -0.30, -0.15)}>{(change / price).toFixed(2)}</td>
       </>}
     </tr>
@@ -107,6 +116,18 @@ window.onkeydown = function (e) {
     localStorage.clear();
     window.location.reload()
   }
+}
+
+function capture() {
+  var node = document.getElementById('table-node');
+
+  toJpeg(node, { quality: 5 })
+    .then(function (dataUrl) {
+      var link = document.createElement('a');
+      link.download = 'my-image-name.jpeg';
+      link.href = dataUrl;
+      link.click();
+    });
 }
 
 function App() {
@@ -129,11 +150,10 @@ function App() {
     })
   }, [])
 
-  let groups = uniq(map(companies, 'sector'))
+  let groups = uniq(map(companies, 'sector')).filter(e=>!['Mutual Fund','Trading','Organized Fund', 'Others', 'Telecom'].includes(e))
 
-  companies = companies.filter(company => (group === '' || company.sector === group) && company.companyName.indexOf('Promoter') === -1 && (search === '' || company.companyName.toLowerCase().indexOf(search.toLowerCase()) > -1 || company.ticker.toLowerCase().indexOf(search.toLowerCase()) > -1))
+  companies = companies.filter(company => (group === '' || company.sector === group) && company.companyName.indexOf('Promoter') === -1 && (search === '' || company.companyName.toLowerCase().indexOf(search.toLowerCase()) > -1 || search.toLowerCase().indexOf(company.ticker.toLowerCase()) > -1))
   // .slice(0,1)
-  console.log(companies)
   return (
     <div className="App">
       <input value={search} placeholder="Search ..." onChange={event => setSearch(event.target.value)} />
@@ -141,7 +161,8 @@ function App() {
         <option value="">All</option>
         {groups.map(group => <option key={group} value={group}>{group}</option>)}
       </select>
-      <table>
+      <button onClick={capture} className="full-button">Capture</button>
+      <table id="table-node">
         <tbody>
           <tr>
             <td>Symbol</td>
@@ -152,6 +173,7 @@ function App() {
             <td>PE</td>
             <td>BVPS</td>
             <td>Fair Price</td>
+            <td>Total Shares</td>
             <td>Deviation</td>
           </tr>
           {
