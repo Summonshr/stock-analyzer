@@ -1,8 +1,13 @@
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 table, tr, td {
   border:  1px solid black;
   border-collapse: collapse;
   padding: 5px;
-  font-size: 15px;
+  font-size: 17spx;
 }
 
 select {
@@ -27,4 +32,10 @@ input {
 
 .bg-green-lightest {
   background-color: rgb(217, 245, 217);
+}
+
+@media only screen and (max-width: 700px) {
+  .hide-small {
+      display: none;
+  }
 }

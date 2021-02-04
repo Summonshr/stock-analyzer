@@ -89,10 +89,10 @@ function Company({ company }) {
     let price = latest.latestPrice
     let change = (fair_value - price).toFixed()
 
-    return <tr key={company.ticker}><td><a href={"https://sharesansar.com/company/" + company.ticker} target="_blank">{company.ticker}</a></td><td>{company.companyName}</td>
+    return <tr key={company.ticker}><td><a href={"https://sharesansar.com/company/" + company.ticker} target="_blank">{company.ticker}</a></td><td className="hide-small">{company.companyName}</td>
       {latest && <>
         <td>{latest.latestPrice}</td>
-        <td>{latest.pointChange} {latest.pointChange > 0 ? '↑' : '↓'}</td>
+        <td style={{minWidth: '40px'}}>{latest.pointChange} {latest.pointChange > 0 ? '↑' : '↓'}</td>
       </>}
       {data.keyFinancial && <>
         <td className={getClassHigherBetter(eps, 15, 20, 30, 45)}>{eps.toFixed(2)}</td>
@@ -118,13 +118,13 @@ window.onkeydown = function (e) {
   }
 }
 
-function capture() {
+function capture(name) {
   var node = document.getElementById('table-node');
 
-  toJpeg(node, { quality: 5 })
+  toJpeg(node)
     .then(function (dataUrl) {
       var link = document.createElement('a');
-      link.download = 'my-image-name.jpeg';
+      link.download = name + '.png';
       link.href = dataUrl;
       link.click();
     });
@@ -161,12 +161,12 @@ function App() {
         <option value="">All</option>
         {groups.map(group => <option key={group} value={group}>{group}</option>)}
       </select>
-      <button onClick={capture} className="full-button">Capture</button>
+      <button onClick={()=>capture(search||group||'Capture')} className="full-button">Capture</button>
       <table id="table-node">
         <tbody>
           <tr>
             <td>Symbol</td>
-            <td>Name</td>
+            <td className="hide-small">Name</td>
             <td>Price</td>
             <td>Diff</td>
             <td>EPS</td>
