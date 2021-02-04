@@ -124,7 +124,7 @@ function capture(name) {
   toJpeg(node)
     .then(function (dataUrl) {
       var link = document.createElement('a');
-      link.download = name + '.png';
+      link.download = name;
       link.href = dataUrl;
       link.click();
     });
