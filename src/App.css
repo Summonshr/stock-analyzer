@@ -1,0 +1,41 @@
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+table, tr, td {
+  border:  1px solid black;
+  border-collapse: collapse;
+  padding: 5px;
+  font-size: 17spx;
+}
+
+select {
+  padding: 10px;
+}
+
+input {
+  padding: 10px;
+}
+
+.bg-green {
+  background-color: rgb(90, 185, 90);
+}
+
+.bg-green-light {
+  background-color: rgb(147, 248, 147);
+}
+
+.bg-green-lighter {
+  background-color: rgb(177, 245, 177);
+}
+
+.bg-green-lightest {
+  background-color: rgb(217, 245, 217);
+}
+
+@media only screen and (max-width: 700px) {
+  .hide-small {
+      display: none;
+  }
+}

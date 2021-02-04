@@ -1,0 +1,21 @@
+{
+  "name": "stock-analyzers",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "axios": "^0.21.0",
+    "dom-to-image": "^2.6.0",
+    "html-to-image": "^1.3.21",
+    "lodash": "^4.17.20",
+    "millify": "^3.5.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "vite": "^1.0.0-rc.13",
+    "vite-plugin-react": "^4.0.1"
+  }
+}
