@@ -43,7 +43,7 @@ function getClassHigherBetter(v, p1, p2, p3, p4) {
   return ''
 }
 
-function Company({ company }) {
+function Company({ company, minEps, maxPe, minBVPS, maxTS }) {
 
 
   let [data, setData] = useState('')
@@ -84,15 +84,29 @@ function Company({ company }) {
 
   if (data && data.keyFinancial && data.keyFinancial.data && data.keyFinancial.data[0]) {
     let { eps, bvps } = data.keyFinancial.data[0]
+    if(parseInt(minEps, 10) > 0 && parseInt(minEps, 10) > parseInt(eps, 10)) {
+      return '';
+    }
+
+    if(parseInt(minBVPS, 10) > 0 && parseInt(minBVPS, 10) > parseInt(bvps, 10)) {
+      return '';
+    }
     let fair_value = Grahams(data.keyFinancial.data[0])
     let pe = eps ? (latest.latestPrice / eps).toFixed(2) : 0
+    if(parseInt(maxPe, 10) > 0 && parseInt(pe, 10) > parseInt(maxPe, 10)) {
+      return ''
+    }
+
+    if(data.summary && parseInt(maxTS, 10) < parseInt(data.summary.listedShares, 10)) {
+      return ''
+    }
     let price = latest.latestPrice
     let change = (fair_value - price).toFixed()
 
     return <tr key={company.ticker}><td><a href={"https://sharesansar.com/company/" + company.ticker} target="_blank">{company.ticker}</a></td><td className="hide-small">{company.companyName}</td>
       {latest && <>
         <td>{latest.latestPrice}</td>
-        <td style={{minWidth: '40px'}}>{latest.pointChange} {latest.pointChange > 0 ? '↑' : '↓'}</td>
+        <td style={{ minWidth: '40px' }}>{latest.pointChange} {latest.pointChange > 0 ? '↑' : '↓'}</td>
       </>}
       {data.keyFinancial && <>
         <td className={getClassHigherBetter(eps, 15, 20, 30, 45)}>{eps.toFixed(2)}</td>
@@ -124,18 +138,30 @@ function capture(name) {
   toJpeg(node)
     .then(function (dataUrl) {
       var link = document.createElement('a');
-      link.download = name;
+      link.download = prompt('Name please');
       link.href = dataUrl;
       link.click();
     });
 }
+let password = ''
 
 function App() {
+
+  password = password || prompt('password')
+
+  if( password !== 'sumanji') {
+    return <div>Unauthorized</div>;
+  }
 
   let [companies, setCompanies] = useState([])
   let [group, setGroup] = useState('Commercial Banks')
   let [search, setSearch] = useState('')
+  let [minimumEPS, setMinimumEPS] = useState(0)
+  let [maximumPE, setMaximumPE] = useState(0)
+  let [minimumBVPS, setMinimumBVPS] = useState(0)
+  let [maximumTotalShares, setMaximumTotalShares] = useState(150000000)
 
+  
   useEffect(() => {
     Axios.get('https://bizmandu.com/__stock/tickers/all').then(response => {
 
@@ -150,18 +176,22 @@ function App() {
     })
   }, [])
 
-  let groups = uniq(map(companies, 'sector')).filter(e=>!['Mutual Fund','Trading','Organized Fund', 'Others', 'Telecom'].includes(e))
+  let groups = uniq(map(companies, 'sector')).filter(e => !['Mutual Fund', 'Trading', 'Organized Fund', 'Others', 'Telecom'].includes(e))
 
-  companies = companies.filter(company => (group === '' || company.sector === group) && company.companyName.indexOf('Promoter') === -1 && (search === '' || company.companyName.toLowerCase().indexOf(search.toLowerCase()) > -1 || search.toLowerCase().indexOf(company.ticker.toLowerCase()) > -1))
+  companies = companies.filter(company => (group === '' || company.sector === group) && company.companyName.indexOf('Promoter') === -1 && (search === '' || company.companyName.toLowerCase().indexOf(search.toLowerCase()) > -1 || search.toLowerCase().split('|').includes(company.ticker.toLowerCase())))
   // .slice(0,1)
   return (
     <div className="App">
-      <input value={search} placeholder="Search ..." onChange={event => setSearch(event.target.value)} />
+      <input value={search} type="text" className="search" placeholder="Search ..." onChange={event => setSearch(event.target.value)} />
       <select value={group} onChange={(e) => setGroup(e.target.value)}>
         <option value="">All</option>
         {groups.map(group => <option key={group} value={group}>{group}</option>)}
       </select>
-      <button onClick={()=>capture(search||group||'Capture')} className="full-button">Capture</button>
+      <button onClick={() => capture(search || group || 'Capture')} className="full-button">Capture</button>
+      <input type="range" value={minimumEPS} onChange={event=>setMinimumEPS(event.target.value)}/>{minimumEPS} EPS
+      <input type="range"  value={maximumPE} onChange={event=>setMaximumPE(event.target.value)}/>{maximumPE} PE
+      <input type="range"  value={minimumBVPS} min="50" max="350" onChange={event=>setMinimumBVPS(event.target.value)}/>{minimumBVPS} BVPS
+      <input type="range"  value={maximumTotalShares} min="0" step="500000" max="150000000" onChange={event=>setMaximumTotalShares(event.target.value)}/>{millify(maximumTotalShares)} Total Shares
       <table id="table-node">
         <tbody>
           <tr>
@@ -177,7 +207,7 @@ function App() {
             <td>Deviation</td>
           </tr>
           {
-            companies.map(company => <Company key={company.ticker} company={company} />)
+            companies.map(company => <Company maxTS={maximumTotalShares == '150000000' ? '100000000000000' : maximumTotalShares} minBVPS={minimumBVPS} maxPe={maximumPE} minEps={minimumEPS} key={company.ticker} company={company} />).filter(Boolean)
           }
         </tbody>
       </table>

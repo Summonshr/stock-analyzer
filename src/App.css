@@ -14,7 +14,7 @@ select {
   padding: 10px;
 }
 
-input {
+input.search {
   padding: 10px;
 }
 
@@ -38,4 +38,12 @@ input {
   .hide-small {
       display: none;
   }
+}
+
+.full-button{
+  height: 40px;
+}
+
+table {
+  background-color: rgb(211, 255, 211);
 }
