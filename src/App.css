@@ -47,3 +47,50 @@ input.search {
 table {
   background-color: rgb(211, 255, 211);
 }
+
+
+.single .title {
+  color: #B68D40
+}
+
+
+.single table {
+  border-radius: 5px;
+  background: #122620
+}
+
+.single  th {
+  color: #f3d49a
+}
+
+.single th{
+  text-align: left;
+  padding: 10px 15px;
+}
+.single td {
+  border: none;
+  padding: 5px 15px;
+}
+.single tr:last-child td {
+  padding-bottom: 15px;
+}
+
+.single table {
+  background-size: 100px;
+  background-position: right;
+  background-repeat: no-repeat;
+  background-blend-mode: luminosity;
+}
+
+.single td:nth-child(2) {
+  font-weight: bold;
+}
+
+.single {
+  color: #F4EBD0;
+}
+
+.single table, .single tr, .single td {
+  border: none;
+  padding: 10px;
+}
