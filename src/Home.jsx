@@ -4,18 +4,6 @@ import { map, uniq } from 'lodash';
 import millify from 'millify';
 import Company from './Company';
 
-export function capture(name) {
-  var node = document.getElementById('table-node');
-
-  toJpeg(node)
-    .then(function (dataUrl) {
-      var link = document.createElement('a');
-      link.download = prompt('Name please');
-      link.href = dataUrl;
-      link.click();
-    });
-}
-
 let password = ''
 
 export default function() {
@@ -65,7 +53,7 @@ export default function() {
       <input type="range" value={maximumPE} onChange={event => setMaximumPE(event.target.value)} />{maximumPE} PE
       <input type="range" value={minimumBVPS} min="50" max="350" onChange={event => setMinimumBVPS(event.target.value)} />{minimumBVPS} BVPS
       <input type="range" value={maximumTotalShares} min="0" step="500000" max="150000000" onChange={event => setMaximumTotalShares(event.target.value)} />{millify(maximumTotalShares)} Total Shares
-      <table id="table-node">
+      <table id="capture">
         <tbody>
           <tr>
             <td>Symbol</td>

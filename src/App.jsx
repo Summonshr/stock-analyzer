@@ -1,6 +1,7 @@
 import React from 'react'
 import './App.css';
 import Home from './Home';
+import Note from './Note';
 import {
   BrowserRouter as Router,
   Switch,
@@ -17,7 +18,6 @@ window.onkeydown = function (e) {
 }
 
 
-
 function App(){
   return <Router>
     <Switch>
@@ -26,6 +26,9 @@ function App(){
       </Route>
       <Route path="/company/:company" exact>
         <Company/>
+      </Route>
+      <Route path="/note/card" exact>
+        <Note/>
       </Route>
     </Switch>
 </Router>

@@ -6,7 +6,6 @@
 table, tr, td {
   border-collapse: collapse;
   padding: 15px;
-  background: rgb(1 57 66);
   color: rgb(231, 252, 255);
   font-size: 20px;
 }
@@ -20,19 +19,19 @@ input.search {
 }
 
 .bg-green {
-  background-color: rgb(90, 185, 90);
+  color: rgb(0 255 0);
 }
 
 .bg-green-light {
-  background-color: rgb(147, 248, 147);
+  color: rgb(174 255 174);
 }
 
 .bg-green-lighter {
-  background-color: rgb(177, 245, 177);
+  color: rgb(108 255 108);
 }
 
 .bg-green-lightest {
-  background-color: rgb(217, 245, 217);
+  color: rgb(197 255 199);
 }
 
 @media only screen and (max-width: 700px) {
@@ -43,10 +42,6 @@ input.search {
 
 .full-button{
   height: 40px;
-}
-
-table {
-  background-color: rgb(211, 255, 211);
 }
 
 .single .title {
@@ -94,4 +89,42 @@ table {
 .single table, .single tr, .single td {
   border: none;
   padding: 10px;
+}
+
+table {
+  background-image: url(./logo.png);
+  background-repeat: space;
+  background-blend-mode: saturation;
+  background-size: contain;
+  background-position: right center;
+  background-color: rgb(1, 57, 66);
+
+}
+
+.note {
+  max-width: 30rem;
+  background-color: rgb(33 108 119);
+  color: white;
+  line-height: 1.7;
+  font-size: 17px;
+  padding: 10px 30px;
+  text-align: center;
+  background-image: url(./logo.png);
+  text-shadow: rgb(41, 82, 82) 1px 2px;
+  background-blend-mode: saturation;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.note h2 {
+  border-bottom: 1px solid #0d5a5a;
+  box-shadow: 0px 1px #1f9292;
+
+ 
+}
+
+.note p {
+  font-size: 20px;
+  padding: 0 40px;
 }
