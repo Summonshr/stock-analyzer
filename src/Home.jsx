@@ -3,6 +3,7 @@ import Axios from 'axios';
 import { map, uniq } from 'lodash';
 import millify from 'millify';
 import Company from './Company';
+import Quote from './quotes';
 
 let password = ''
 
@@ -53,6 +54,7 @@ export default function() {
       <input type="range" value={maximumPE} onChange={event => setMaximumPE(event.target.value)} />{maximumPE} PE
       <input type="range" value={minimumBVPS} min="50" max="350" onChange={event => setMinimumBVPS(event.target.value)} />{minimumBVPS} BVPS
       <input type="range" value={maximumTotalShares} min="0" step="500000" max="150000000" onChange={event => setMaximumTotalShares(event.target.value)} />{millify(maximumTotalShares)} Total Shares
+      <div className="list-table">
       <table id="capture">
         <tbody>
           <tr>
@@ -67,19 +69,10 @@ export default function() {
             <td>Deviation</td>
           </tr>
           {companies.map(company => <Company maxTS={maximumTotalShares == '150000000' ? '100000000000000' : maximumTotalShares} minBVPS={minimumBVPS} maxPe={maximumPE} minEps={minimumEPS} key={company.ticker} company={company} />).filter(Boolean)}
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
         </tbody>
       </table>
-    </div>
+      <p className="quote"><Quote/></p> 
+      </div>
+       </div>
   );
 }
