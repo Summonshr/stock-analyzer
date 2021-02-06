@@ -52,7 +52,7 @@ table {
   background-repeat: space;
   background-blend-mode: saturation;
   background-size: contain;
-  background-position: right center;
+  background-position: center;
   background-color: rgb(1, 57, 66);
 }
 
@@ -123,6 +123,7 @@ table {
 
 .list-table {
   display: inline-block;
+  max-width: min-content;
   background-color: rgb(1, 57, 66);
   padding: 0 0 30px 0;
 }
@@ -134,5 +135,4 @@ table {
   text-align: center;
   padding: 10px 30px;
   border-top: 1px solid #0000002b;
-  max-width: 36rem;
 }
