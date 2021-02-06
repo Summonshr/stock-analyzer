@@ -57,7 +57,6 @@ export default function() {
         <tbody>
           <tr>
             <td>Symbol</td>
-            <td className="hide-small">Name</td>
             <td>Price</td>
             <td>Diff</td>
             <td>EPS</td>
@@ -68,6 +67,17 @@ export default function() {
             <td>Deviation</td>
           </tr>
           {companies.map(company => <Company maxTS={maximumTotalShares == '150000000' ? '100000000000000' : maximumTotalShares} minBVPS={minimumBVPS} maxPe={maximumPE} minEps={minimumEPS} key={company.ticker} company={company} />).filter(Boolean)}
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
         </tbody>
       </table>
     </div>

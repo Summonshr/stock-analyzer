@@ -8,12 +8,19 @@ import {
   Route
 } from "react-router-dom";
 import Company from './single'
+import capture from './capture';
+
+window.capture = capture
 
 window.onkeydown = function (e) {
   if (e.keyCode === 82 && e.ctrlKey && e.shiftKey) {
     e.preventDefault()
     localStorage.clear();
     window.location.reload()
+  }
+
+  if (e.code === 'KeyC' && e.ctrlKey ) {
+    capture()
   }
 }
 
