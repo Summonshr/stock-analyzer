@@ -4,10 +4,11 @@
 }
 
 table, tr, td {
-  border:  1px solid black;
   border-collapse: collapse;
-  padding: 5px;
-  font-size: 17spx;
+  padding: 15px;
+  background: rgb(1 57 66);
+  color: rgb(231, 252, 255);
+  font-size: 20px;
 }
 
 select {
@@ -48,11 +49,9 @@ table {
   background-color: rgb(211, 255, 211);
 }
 
-
 .single .title {
   color: #B68D40
 }
-
 
 .single table {
   border-radius: 5px;
@@ -67,10 +66,12 @@ table {
   text-align: left;
   padding: 10px 15px;
 }
+
 .single td {
   border: none;
   padding: 5px 15px;
 }
+
 .single tr:last-child td {
   padding-bottom: 15px;
 }

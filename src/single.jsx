@@ -3,7 +3,7 @@ import img from './logo.png';
 
 export default function () {
     return <div className="single">
-        <table class="background" style={{backgroundImage: img}}>
+        <table class="background" style={{ backgroundImage: img }}>
             <thead>
                 <tr>
                     <th>Company</th>
