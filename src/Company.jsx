@@ -68,15 +68,15 @@ export default function({ company, minEps, maxPe, minBVPS, maxTS }) {
     return <tr key={company.ticker}><td>{company.ticker}</td>
       {latest && <>
         <td>{latest.latestPrice}</td>
-        <td style={{ minWidth: '40px' }}>{latest.pointChange} {latest.pointChange > 0 ? '↑' : '↓'}</td>
+        <td style={{ minWidth: '45px' }}>{latest.pointChange} {latest.pointChange > 0 ? '↑' : '↓'}</td>
       </>}
       {data.keyFinancial && <>
-        <td className={getClassHigherBetter(eps, 15, 20, 30, 45)}>{eps.toFixed(2)}</td>
-        <td className={getClassLowerBetter(pe, 10, 15, 20, 25)}>{pe}</td>
-        <td className={getClassHigherBetter(bvps, 150, 200, 250, 300)}>{bvps}</td>
-        <td>{fair_value}</td>
-        <td>{millify(data.summary.listedShares)}</td>
-        <td className={getClassHigherBetter((change / price).toFixed(2), -0.60, -0.45, -0.30, -0.15)}>{(change / price).toFixed(2)}</td>
+        <td contentEditable className={getClassHigherBetter(eps, 15, 20, 30, 45)}>{eps.toFixed(2)}</td>
+        <td contentEditable className={getClassLowerBetter(pe, 10, 15, 20, 25)}>{pe}</td>
+        <td contentEditable className={getClassHigherBetter(bvps, 150, 200, 250, 300)}>{bvps}</td>
+        <td contentEditable>{fair_value}</td>
+        <td contentEditable>{millify(data.summary.listedShares)}</td>
+        <td contentEditable className={getClassHigherBetter((change / price).toFixed(2), -0.60, -0.45, -0.30, -0.15)}>{(change / price).toFixed(2)}</td>
       </>}
     </tr>;
   }

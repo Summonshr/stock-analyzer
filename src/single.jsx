@@ -5,72 +5,90 @@ import { useParams } from 'react-router-dom'
 import quotes from './quotes'
 
 function getHuman(num) {
-    if(num == 1){
+    if (num == 1) {
         return 'First'
     }
 
-    if(num == 2) {
+    if (num == 2) {
         return 'Second'
     }
 
-    if(num == 3) {
+    if (num == 3) {
         return 'Third'
     }
 
-    if(num == 4) {
+    if (num == 4) {
         return 'Fourth'
     }
 }
 
 export default function () {
-    let {company} = useParams()
+    let { company } = useParams()
     let [header, setHeader] = useState(false)
     let [summary, setSummary] = useState(false)
     let [financial, setFinancial] = useState(false)
     let [announcement, setAnnouncement] = useState(false)
     let [dividend, setDividend] = useState(false)
-    useEffect(()=>{
-        axios.get('https://bizmandu.com/__stock/tearsheet/header/?tkr='+company).then(r=>setHeader(r.data.message))
-        axios.get('https://bizmandu.com/__stock/tearsheet/summary/?tkr='+company).then(r=>setSummary(r.data.message))
-        axios.get('https://bizmandu.com/__stock/tearsheet/financial/keyStats/?tkr='+company).then(r=>setFinancial(r.data.message))
-        axios.get('https://bizmandu.com/__stock/tearsheet/announcement/?tkr='+company).then(r=>setAnnouncement(r.data.message))
-        axios.get('https://bizmandu.com/__stock/tearsheet/dividend/?tkr='+company).then(r=>setDividend(r.data.message))
+    useEffect(() => {
+        axios.get('https://bizmandu.com/__stock/tearsheet/header/?tkr=' + company).then(r => setHeader(r.data.message))
+        axios.get('https://bizmandu.com/__stock/tearsheet/summary/?tkr=' + company).then(r => setSummary(r.data.message))
+        axios.get('https://bizmandu.com/__stock/tearsheet/financial/keyStats/?tkr=' + company).then(r => setFinancial(r.data.message))
+        axios.get('https://bizmandu.com/__stock/tearsheet/announcement/?tkr=' + company).then(r => setAnnouncement(r.data.message))
+        axios.get('https://bizmandu.com/__stock/tearsheet/dividend/?tkr=' + company).then(r => setDividend(r.data.message))
 
         // https://bizmandu.com/__stock/tearsheet//?tkr=JSLBB
     }, [])
 
     let keys = []
 
-    keys.push({key: 'Latest Trading Price', value: 'Rs. '+ header.latestPrice})
+    keys.push({ key: 'Latest Trading Price', value: 'Rs. ' + header.latestPrice })
 
 
-    if(!header || !summary || !financial || !announcement || !dividend) {
+    if (!header || !summary || !financial || !announcement || !dividend) {
         return <div>Work on it</div>
-    }   
+    }
 
     let current = summary.keyFinancial.data[0]
 
-    // {"type":"CURRENT","totalRevenue":7297938,"grossProfit":2982429,"netIncome":1586609,"eps":19.7078,"bvps":207.394,"roa":0.0146,"roe":0.11}
+    keys.push({ key: 'Earning per Share', value: 'Rs. ' + current.eps.toFixed(2) })
 
-    keys.push({key: 'Earning per Share', value: 'Rs. '+current.eps.toFixed(2)})
+    keys.push({ key: 'Total Income', value: 'Rs. ' + millify(current.netIncome * 1000) })
 
-    keys.push({key: 'Total Income', value: 'Rs. '+millify(current.netIncome*1000)})
+    keys.push({ key: 'Book Value per Share', value: 'Rs. ' + current.bvps })
 
-    keys.push({key: 'Book Value per Share', value: 'Rs. '+current.bvps})
+    keys.push({ key: '52 week high-low', value: [summary.summary.fiftyTwoWeekHigh.toFixed(0), summary.summary.fiftyTwoWeekLow.toFixed(0)].join(' - ') })
 
-    keys.push({key: '52 week high-low', value: [summary.summary.fiftyTwoWeekHigh.toFixed(0), summary.summary.fiftyTwoWeekLow.toFixed(0)].join(' - ')})
+    keys.push({ key: 'Total Listed Shares', value: millify(summary.summary.listedShares) })
+    let ldiv = dividend.dividend.reverse().pop()
 
-    keys.push({key: 'Total Listed Shares', value: millify(summary.summary.listedShares)})
-    let ldiv =  dividend.dividend.reverse().pop()
-    keys.push({key: 'Latest Dividend', value: ['Bonus: ' , (ldiv.bonus * 100).toFixed(2),'%', ' / ', 'Cash: ', (ldiv.cash * 100).toFixed(2),'%'].join('')})
+    let div = ['Bonus: ', (ldiv.bonus * 100).toFixed(2), '%', ' / ', 'Cash: ', (ldiv.cash * 100).toFixed(2), '%'];
+
+    if (ldiv.bonus == 0 && ldiv.cash == 0) {
+        div = ['No dividend announced']
+    }
+
+    if (financial && financial.data && financial.data.length > 0 && financial.data[0].GrowthOverPriorPeriod) {
+        let currentFinancial = financial.data[0]
+        if (currentFinancial.GrowthOverPriorPeriod) {
+            keys.push({ key: 'Company Growth', value: (currentFinancial.GrowthOverPriorPeriod * 100).toFixed(2) })
+        }
+
+        if (currentFinancial.NonPerformingLoanNplToTotalLoan) {
+            keys.push({ key: 'Non Performing Loan %', value: (currentFinancial.NonPerformingLoanNplToTotalLoan * 100).toFixed(2) + "%" })
+        }
+    }
+
+    keys.push({ key: 'Latest Dividend', value: div.join('') })
+
+
     return <div className="single-company" id="capture">
         <h2>{header.company} ({header.ticker})</h2>
-<p className="text-center">{getHuman(summary.keyFinancial.quarter)} Quarter</p>
+        <p className="text-center" contentEditable>{getHuman(summary.keyFinancial.quarter)} Quarter</p>
         <table>
             <tbody>
-{keys.map(e=><tr key={e.key}><td>{e.key}</td><td>:</td><td>{e.value}</td></tr>)}
+                {keys.map(e => <tr key={e.key}><td>{e.key}</td><td>:</td><td contentEditable>{e.value}</td></tr>)}
             </tbody>
         </table>
-<p className="quote">{quotes()}</p>
+        <p className="quote">{quotes()}</p>
     </div>
 }

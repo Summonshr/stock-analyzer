@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
-import { map, uniq } from 'lodash';
+import { map, sortBy, uniq } from 'lodash';
 import millify from 'millify';
 import Company from './Company';
 import Quote from './quotes';
@@ -42,6 +42,8 @@ export default function() {
 
   companies = companies.filter(company => (group === '' || company.sector === group) && company.companyName.indexOf('Promoter') === -1 && (search === '' || company.companyName.toLowerCase().indexOf(search.toLowerCase()) > -1 || search.toLowerCase().split('|').includes(company.ticker.toLowerCase())));
   // .slice(0,1)
+
+  companies = sortBy(companies, 'ticker')
   return (
     <div className="App">
       <input value={search} type="text" className="search" placeholder="Search ..." onChange={event => setSearch(event.target.value)} />
