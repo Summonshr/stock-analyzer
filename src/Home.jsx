@@ -4,6 +4,7 @@ import { map, sortBy, uniq } from 'lodash';
 import millify from 'millify';
 import Company from './Company';
 import Quote from './quotes';
+import './App.css'
 
 let password = ''
 

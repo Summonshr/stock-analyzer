@@ -65,7 +65,7 @@ export default function({ company, minEps, maxPe, minBVPS, maxTS }) {
     let price = latest.latestPrice;
     let change = (fair_value - price).toFixed();
 
-    return <tr key={company.ticker}><td>{company.ticker}</td>
+    return <tr key={company.ticker}><td><a href={'/company/'+company.ticker} target="_blank">{company.ticker}</a></td>
       {latest && <>
         <td>{latest.latestPrice}</td>
         <td style={{ minWidth: '45px' }}>{latest.pointChange} {latest.pointChange > 0 ? '↑' : '↓'}</td>
