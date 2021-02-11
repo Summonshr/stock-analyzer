@@ -23,6 +23,7 @@ export default function() {
   let [maximumPE, setMaximumPE] = useState(0);
   let [minimumBVPS, setMinimumBVPS] = useState(0);
   let [maximumTotalShares, setMaximumTotalShares] = useState(150000000);
+  let [checkChange, setCheckChange] = useState(true)
 
 
   useEffect(() => {
@@ -44,6 +45,9 @@ export default function() {
   companies = companies.filter(company => (group === '' || company.sector === group) && company.companyName.indexOf('Promoter') === -1 && (search === '' || company.companyName.toLowerCase().indexOf(search.toLowerCase()) > -1 || search.toLowerCase().split('|').includes(company.ticker.toLowerCase())));
   // .slice(0,1)
 
+  companies = companies.filter(company=>!['KMFL', 'HAMRO', 'NCDB', 'SHBL', 'LFC'].includes(company.ticker))
+
+
   companies = sortBy(companies, 'ticker')
   return (
     <div className="App">
@@ -55,10 +59,16 @@ export default function() {
       <button onClick={() => capture(search || group || 'Capture')} className="full-button">Capture</button>
       <input type="range" value={minimumEPS} onChange={event => setMinimumEPS(event.target.value)} />{minimumEPS} EPS
       <input type="range" value={maximumPE} onChange={event => setMaximumPE(event.target.value)} />{maximumPE} PE
-      <input type="range" value={minimumBVPS} min="50" max="350" onChange={event => setMinimumBVPS(event.target.value)} />{minimumBVPS} BVPS
+      <input type="range" value={minimumBVPS} step="10" min="50" max="350" onChange={event => setMinimumBVPS(event.target.value)} />{minimumBVPS} BVPS
       <input type="range" value={maximumTotalShares} min="0" step="500000" max="150000000" onChange={event => setMaximumTotalShares(event.target.value)} />{millify(maximumTotalShares)} Total Shares
+      <input type="checkbox"  checked={checkChange} onChange={()=>setCheckChange(!checkChange)} /> Exclude 0 change
       <div className="list-table">
       <table id="capture">
+        <thead>
+          <tr>
+          <th colSpan="9" className="table-heading">Nepse Table</th>
+          </tr>
+        </thead>
         <tbody>
           <tr>
             <td>Symbol</td>
@@ -71,7 +81,7 @@ export default function() {
             <td>Total Shares</td>
             <td>Deviation</td>
           </tr>
-          {companies.map(company => <Company maxTS={maximumTotalShares == '150000000' ? '100000000000000' : maximumTotalShares} minBVPS={minimumBVPS} maxPe={maximumPE} minEps={minimumEPS} key={company.ticker} company={company} />).filter(Boolean)}
+          {companies.map(company => <Company checkChange={checkChange} maxTS={maximumTotalShares == '150000000' ? '100000000000000' : maximumTotalShares} minBVPS={minimumBVPS} maxPe={maximumPE} minEps={minimumEPS} key={company.ticker} company={company} />).filter(Boolean)}
         </tbody>
       </table>
       <p className="quote"><Quote/></p> 

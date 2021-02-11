@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { find } from 'lodash'
 import millify from 'millify'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -59,12 +60,13 @@ export default function () {
     keys.push({ key: '52 week high-low', value: [summary.summary.fiftyTwoWeekHigh.toFixed(0), summary.summary.fiftyTwoWeekLow.toFixed(0)].join(' - ') })
 
     keys.push({ key: 'Total Listed Shares', value: millify(summary.summary.listedShares) })
-    let ldiv = dividend.dividend.reverse().pop()
 
-    let div = ['Bonus: ', (ldiv.bonus * 100).toFixed(2), '%', ' / ', 'Cash: ', (ldiv.cash * 100).toFixed(2), '%'];
+    let ldiv = find(dividend.dividend, { year: "2019/20" })
 
-    if (ldiv.bonus == 0 && ldiv.cash == 0) {
-        div = ['No dividend announced']
+    let div = ['No Dividend Announced'];
+
+    if (ldiv.bonus && ldiv.cash) {
+        div = ['Bonus: ', (ldiv.bonus * 100).toFixed(2), '%', ' / ', 'Cash: ', (ldiv.cash * 100).toFixed(2), '%']
     }
 
     if (financial && financial.data && financial.data.length > 0 && financial.data[0].GrowthOverPriorPeriod) {

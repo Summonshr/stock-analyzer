@@ -5,7 +5,7 @@ import Grahams from './Grahams';
 import getClassLowerBetter from './getClassLowerBetter';
 import getClassHigherBetter from './getClassHigherBetter';
 
-export default function({ company, minEps, maxPe, minBVPS, maxTS }) {
+export default function({ company, minEps, maxPe, minBVPS, maxTS, checkChange }) {
 
 
   let [data, setData] = useState('');
@@ -40,12 +40,10 @@ export default function({ company, minEps, maxPe, minBVPS, maxTS }) {
     }
   }
 
-  if (['KMFL', 'HAMRO', 'NCDB', 'SHBL', 'LFC'].includes(company.ticker)) {
-    return '';
-  }
-
   if (data && data.keyFinancial && data.keyFinancial.data && data.keyFinancial.data[0]) {
+    
     let { eps, bvps } = data.keyFinancial.data[0];
+
     if (parseInt(minEps, 10) > 0 && parseInt(minEps, 10) > parseInt(eps, 10)) {
       return '';
     }
@@ -53,8 +51,10 @@ export default function({ company, minEps, maxPe, minBVPS, maxTS }) {
     if (parseInt(minBVPS, 10) > 0 && parseInt(minBVPS, 10) > parseInt(bvps, 10)) {
       return '';
     }
+
     let fair_value = Grahams(data.keyFinancial.data[0]);
     let pe = eps ? (latest.latestPrice / eps).toFixed(2) : 0;
+    
     if (parseInt(maxPe, 10) > 0 && parseInt(pe, 10) > parseInt(maxPe, 10)) {
       return '';
     }
@@ -62,8 +62,12 @@ export default function({ company, minEps, maxPe, minBVPS, maxTS }) {
     if (data.summary && parseInt(maxTS, 10) < parseInt(data.summary.listedShares, 10)) {
       return '';
     }
+
     let price = latest.latestPrice;
     let change = (fair_value - price).toFixed();
+    if(checkChange && latest.pointChange == 0) {
+      return '';
+    }
 
     return <tr key={company.ticker}><td><a href={'/company/'+company.ticker} target="_blank">{company.ticker}</a></td>
       {latest && <>
@@ -75,7 +79,7 @@ export default function({ company, minEps, maxPe, minBVPS, maxTS }) {
         <td contentEditable className={getClassLowerBetter(pe, 10, 15, 20, 25)}>{pe}</td>
         <td contentEditable className={getClassHigherBetter(bvps, 150, 200, 250, 300)}>{bvps}</td>
         <td contentEditable>{fair_value}</td>
-        <td contentEditable>{millify(data.summary.listedShares)}</td>
+        <td contentEditable>{millify(data.summary.listedShares || (data.summary.mktCap/latest.latestPrice))}</td>
         <td contentEditable className={getClassHigherBetter((change / price).toFixed(2), -0.60, -0.45, -0.30, -0.15)}>{(change / price).toFixed(2)}</td>
       </>}
     </tr>;

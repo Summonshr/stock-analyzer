@@ -57,11 +57,11 @@ table {
 }
 
 .note {
-  max-width: 30rem;
+  max-width: 97%;
   background-color: rgb(33 108 119);
   color: white;
   line-height: 1.7;
-  font-size: 17px;
+  font-size: 48px;
   padding: 10px 30px;
   text-align: center;
   background-image: url(./logo.png);
@@ -78,8 +78,12 @@ table {
 }
 
 .note p {
-  font-size: 20px;
+  font-size: 48px;
   padding: 0 40px;
+}
+
+.single-company td {
+  font-size: 24px;
 }
 
 .single-company {
@@ -87,7 +91,7 @@ table {
   color: rgb(236, 236, 236);
   padding: 20px;
   padding-bottom: 40px;
-  max-width: 36rem;
+  max-width: 48rem;
 }
 
 .single-company ul {
@@ -95,12 +99,17 @@ table {
   line-height: 1.7;;
 } 
 
+.single-company td:nth-child(1) {
+  text-align: right;
+}
+
 .single-company h2{
   border-bottom: 1px solid rgb(19, 68, 71);
   text-align: center;
   padding-bottom: 10px;
   margin-bottom: 5px;
-  font-size: 30px;
+  font-size: 48px;
+  max-width: 48em;
 }
 
 .single-company  p{
@@ -131,7 +140,7 @@ table {
 
 .quote {
   color: rgb(241, 255, 241);
-  font-size: 17px;
+  font-size: 24px;
   text-align: center;
   padding: 10px 30px;
   border-top: 1px solid #0000002b;
@@ -141,4 +150,10 @@ table {
 .list-table a {
   text-decoration: none;
   color: white;
+}
+
+.table-heading {
+  padding: 24px;
+  font-size: 36px;
+  color: #93ff93a6;
 }
