@@ -79,13 +79,11 @@ export default function({ company, minEps, maxPe, minBVPS, maxTS, checkChange })
         <td contentEditable className={getClassLowerBetter(pe, 10, 15, 20, 25)}>{pe}</td>
         <td contentEditable className={getClassHigherBetter(bvps, 150, 200, 250, 300)}>{bvps}</td>
         <td contentEditable>{fair_value}</td>
-        <td contentEditable>{millify(data.summary.listedShares || (data.summary.mktCap/latest.latestPrice))}</td>
+        <td contentEditable>{millify(data.summary.listedShares || (data.summary.mktCap/(latest.latestPrice || 1)))}</td>
         <td contentEditable className={getClassHigherBetter((change / price).toFixed(2), -0.60, -0.45, -0.30, -0.15)}>{(change / price).toFixed(2)}</td>
       </>}
     </tr>;
   }
 
   return '';
-
-
 }

@@ -51,6 +51,7 @@ export default function() {
   companies = sortBy(companies, 'ticker')
   return (
     <div className="App">
+      <div>
       <input value={search} type="text" className="search" placeholder="Search ..." onChange={event => setSearch(event.target.value)} />
       <select value={group} onChange={(e) => setGroup(e.target.value)}>
         <option value="">All</option>
@@ -62,6 +63,7 @@ export default function() {
       <input type="range" value={minimumBVPS} step="10" min="50" max="350" onChange={event => setMinimumBVPS(event.target.value)} />{minimumBVPS} BVPS
       <input type="range" value={maximumTotalShares} min="0" step="500000" max="150000000" onChange={event => setMaximumTotalShares(event.target.value)} />{millify(maximumTotalShares)} Total Shares
       <input type="checkbox"  checked={checkChange} onChange={()=>setCheckChange(!checkChange)} /> Exclude 0 change
+      </div>
       <div className="list-table">
       <table id="capture">
         <thead>
