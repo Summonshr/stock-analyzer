@@ -64,8 +64,8 @@ export default function() {
       <input type="range" value={maximumTotalShares} min="0" step="500000" max="150000000" onChange={event => setMaximumTotalShares(event.target.value)} />{millify(maximumTotalShares)} Total Shares
       <input type="checkbox"  checked={checkChange} onChange={()=>setCheckChange(!checkChange)} /> Exclude 0 change
       </div>
-      <div className="list-table">
-      <table id="capture">
+      <div id="capture" className="list-table">
+      <table>
         <thead>
           <tr>
           <th colSpan="9" className="table-heading">Nepse Table</th>
