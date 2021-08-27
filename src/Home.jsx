@@ -10,11 +10,11 @@ let password = ''
 
 export default function() {
 
-  password = password || prompt('password');
+  // password = password || prompt('password');
 
-  if (password !== 'sumanji') {
-    return <div>Unauthorized</div>;
-  }
+  // if (password !== 'sumanji') {
+  //   return <div>Unauthorized</div>;
+  // }
 
   let [companies, setCompanies] = useState([]);
   let [group, setGroup] = useState('Commercial Banks');
@@ -40,12 +40,12 @@ export default function() {
     });
   }, []);
 
-  let groups = uniq(map(companies, 'sector')).filter(e => !['Mutual Fund', 'Trading', 'Organized Fund', 'Others', 'Telecom'].includes(e));
+  let groups = uniq(map(companies, 'sector'));
 
   companies = companies.filter(company => (group === '' || company.sector === group) && company.companyName.indexOf('Promoter') === -1 && (search === '' || company.companyName.toLowerCase().indexOf(search.toLowerCase()) > -1 || search.toLowerCase().split('|').includes(company.ticker.toLowerCase())));
   // .slice(0,1)
 
-  companies = companies.filter(company=>!['KMFL', 'HAMRO', 'NCDB', 'SHBL', 'LFC'].includes(company.ticker))
+  console.log(companies[0])
 
 
   companies = sortBy(companies, 'ticker')

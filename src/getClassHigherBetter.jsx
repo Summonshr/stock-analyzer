@@ -1,4 +1,5 @@
-export default function(v, p1, p2, p3, p4) {
+export default function(v, p1, p2, p3, p4, p5) {
+  v= parseInt(v)
   if (v > p4) {
     return 'bg-green';
   }
@@ -10,6 +11,9 @@ export default function(v, p1, p2, p3, p4) {
   }
   if (v > p1) {
     return 'bg-green-lightest';
+  }
+  if(v < p5) {
+    return 'bg-red';
   }
   return '';
 }
